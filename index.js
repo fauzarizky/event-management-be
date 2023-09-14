@@ -27,5 +27,3 @@ app.use((err, req, res) => {
 app.listen(PORT, () => {
   console.log(`application start on port ${PORT}`);
 });
-
-// test push 2
