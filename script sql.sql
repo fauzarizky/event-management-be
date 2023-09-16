@@ -8,7 +8,7 @@ CREATE TABLE `db_mytix`.`list_event` (
   `event_date` DATE NULL DEFAULT NULL,
   `event_time` VARCHAR(45) NULL DEFAULT NULL,
   `event_location` VARCHAR(45) NULL DEFAULT NULL,
-  `event_description` VARCHAR(255) NULL DEFAULT NULL,
+  `event_description` VARCHAR(5000) NULL DEFAULT NULL,
   `event_image` VARCHAR(255) NULL DEFAULT NULL,
   `gold_ticket_price` INT NULL DEFAULT NULL,
   `platinum_ticket_price` INT NULL DEFAULT NULL,
