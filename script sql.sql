@@ -390,3 +390,29 @@ The Viu Scream Dates 2023 will be the first Viu Scream Dates in Indonesia,
   0,
   195000
  );
+
+
+ CREATE TABLE `db_mytix`.`registration_form` (
+  `idregistration_form` int NOT NULL AUTO_INCREMENT,
+  `first_name` varchar(45) DEFAULT NULL,
+  `last_name` varchar(45) DEFAULT NULL,
+  `username` varchar(45) DEFAULT NULL,
+  `email` varchar(45) DEFAULT NULL,
+  `password` varchar(45) DEFAULT NULL,
+  `referral_code` varchar(45) DEFAULT NULL,
+  `account_type` varchar(45) DEFAULT NULL,
+  PRIMARY KEY (`idregistration_form`)
+);
+
+INSERT INTO `db_mytix`.`registration_form` (`first_name`,`last_name`,`username`,`email`,`password`,`referral_code`,`account_type`)
+VALUES 
+('Jaka','Tarub','jakatarub42','jakatarub@pendekar.com','Goloksakt1!','mytixjaktar666','User'),
+('Damar','Wilogo','damarpenyusup','damar@tenis.com','Tenisdulu123#','mytixdamsup','User'),
+('Anida','Bajumi','anidasabrina666','anidasabrina@wewe.com','Ayamgoreng1!','mytixansab','Event Organizer'),
+('Anggara','Tri Putra','anggaratriputra','anggaratriputra@gmail.com','Anggara123','mytixanggaratriputra','Event Organizer'),
+('Fauza','Rizky','rizkys','fauzasmg@gmail.com','RR11zky','mytixrzkys','Event Organizer'),
+('Jaka','Widada','jakawidada','jakaui@mail.com','Asd123asd123','mytixjakawidada','User'),
+('Nanang','Supratnang','nangzky','nanang77@mail.com','N4ngnun6','mytixnangzky','User'),
+('Brez','Mariono','breskie','bresk1e@mail.com','!k4nH1u','mytixbreskie','User'),
+('Markona','Mardun','markona','markonam@mail.com','Hydr0c0c0','mytixmarkona','User'),
+('Diamond','Bebi','babiku','diamondbabi@mail.com','H1jrah!','mytixbabiku','User');
