@@ -152,7 +152,9 @@ The Viu Scream Dates 2023 will be the first Viu Scream Dates in Indonesia,
   'online',
   'Semakin TINGGI jabatan seseorang, Maka akan semakin SERING Anda akan diminta untuk berbicara di depan orang banyak Kelas sangat terbatas, karena dalam training akan BANYAK PRAKTEK Public Speaking, sehingga peserta banyak diberi kesempatan untuk latihan.',
   'https://s3-ap-southeast-1.amazonaws.com/loket-production-sg/images/banner/20230831094453_64effea50ff4e.jpg',
-  99000
+  99000,
+  0,
+  0
  ),
  (
   'BAKU HANTAM CHAMPIONSHIP',
@@ -270,7 +272,9 @@ The Viu Scream Dates 2023 will be the first Viu Scream Dates in Indonesia,
   'jakarta',
   'The event will be held on 27-29 October 2023 at Jakarta',
   'https://s-light.tiket.photos/t/01E25EBZS3W0FY9GTG6C42E1SE/rsfit1440960gsm/events/2023/07/20/841ba5ee-b875-4b9f-83ff-bcdc0bcf5457-1689844790925-f15290bd17d49694a0e3219c34fc83be.jpeg',
-  99000
+  99000,
+  0,
+  0
  ),
  (
   '2023 LE SSERAFIM TOUR ‘FLAME RISES’ IN JAKARTA',
@@ -291,6 +295,7 @@ The Viu Scream Dates 2023 will be the first Viu Scream Dates in Indonesia,
   '20:00',
   'jakarta',
   'Saksikan langsung penampilan aktor Thailand, Nanon di fancon perdananya, NANON 1ST FANCON IN JAKARTA! Fancon akan berlangsung pada 30 September 2023 di Gandaria City Hall, Jakarta.',
+  'https://s-light.tiket.photos/t/01E25EBZS3W0FY9GTG6C42E1SE/rsfit1440960gsm/events/2023/09/07/a2c68280-9b9d-4f5c-9457-eb853b60f9df-1694072373763-89620907e9e1efb7aa19ac56a5225437.jpg',
   1100000,
   1800000,
   2800000
@@ -386,10 +391,13 @@ The Viu Scream Dates 2023 will be the first Viu Scream Dates in Indonesia,
   '08:00',
   'online',
   'Belajar langsung cara membuat brand dan karyawan yang kuat dengan GRATYO LIVE BUSINESS COACHING!, Acara daring ini akan berlangsung pada 21 September 2023',
+  'https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1443&q=80',
   0,
   0,
   195000
  );
+ 
+ select * from list_event;
 
 
  CREATE TABLE `db_mytix`.`registration_form` (
