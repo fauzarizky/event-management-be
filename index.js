@@ -4,7 +4,9 @@ const PORT = 8000;
 const app = express();
 app.use(express.json());
 
+const eventRouter = require("./routes/event")
 // Routing
+app.use("/event", eventRouter )
 
 // 404 middleware
 app.use((req, res) => {
