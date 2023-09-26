@@ -5,4 +5,4 @@ const eventController = require("../controller/event")
 const {multerUpload} = require("../lib/multer")
 
 router.get("/", eventController.getAllEvents)
-router.post("/create", eventController.handleCreateEvent, eventController.handleUploadImg, multerUpload.single("img"))
+router.post("/create", eventController.handleCreateEvent, multerUpload.single("img"))
