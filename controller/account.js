@@ -1,16 +1,15 @@
-const bcrypt = require("bcryptjs");
+const bcrypt = require("bcrypt");
 const { Op } = require("sequelize");
 const jwt = require("jsonwebtoken");
 const hbs = require("handlebars");
-const { Account } = require("../models");
+const { Account, Referral } = require("../models");
 const fs = require("fs");
-const mailer = require("../lib/nodemailer");
 
 
 const JWT_SECRET_KEY = "ntar-pindah-ke-env";
 
 exports.handleRegister = async (req, res) => {
-  const { firstName, lastName, username, email, phoneNumber, accountType } =
+  const { firstName, lastName, username, password, email, phoneNumber, accountType } =
     req.body;
 
   try {
@@ -22,6 +21,8 @@ exports.handleRegister = async (req, res) => {
       });
 
     const result = await Account.create({
+        firstName,
+        lastName,
       username,
       password: hashPassword,
       email,
