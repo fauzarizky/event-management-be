@@ -13,9 +13,9 @@ module.exports = (sequelize, DataTypes) => {
   }
   Price.init(
     {
-      goldTicketPrice: DataTypes.NUMBER,
-      platinumTicketPrice: DataTypes.NUMBER,
-      diamondTicketPrice: DataTypes.NUMBER,
+      goldTicketPrice: DataTypes.INTEGER,
+      platinumTicketPrice: DataTypes.INTEGER,
+      diamondTicketPrice: DataTypes.INTEGER,
     },
     {
       sequelize,
