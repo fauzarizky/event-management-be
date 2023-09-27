@@ -10,8 +10,7 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      Referral.belongsTo(models.Account, {foreignKey: "referralId"});
-      
+      Referral.hasMany(models.Transaction, { foreignKey: "referralId" });
     }
   }
   Referral.init({
@@ -22,3 +21,4 @@ module.exports = (sequelize, DataTypes) => {
   });
   return Referral;
 };
+
