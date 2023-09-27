@@ -16,6 +16,20 @@ module.exports = (sequelize, DataTypes) => {
       Transaction.belongsTo(models.referral, { foreignKey: "referralId" });
     }
   }
+<<<<<<< HEAD
+  Transaction.init({
+    eventId: DataTypes.INTEGER,
+    accountId: DataTypes.INTEGER,
+    transactionDate: DataTypes.DATE,
+    paymentMethodId: DataTypes.INTEGER,
+    referralId: DataTypes.INTEGER,
+    couponId: DataTypes.INTEGER,
+    totalPrice: DataTypes.INTEGER
+  }, {
+    sequelize,
+    modelName: 'Transaction',
+  });
+=======
   Transaction.init(
     {
       eventId: DataTypes.INTEGER,
@@ -35,5 +49,6 @@ module.exports = (sequelize, DataTypes) => {
       modelName: "Transaction",
     }
   );
+>>>>>>> 3554ba0de7948f10e03a56fd7c40ff22b61f2cd2
   return Transaction;
 };
