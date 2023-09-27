@@ -5,8 +5,10 @@ const app = express();
 app.use(express.json());
 
 const eventRouter = require("./routes/event")
+const transactionRouter = require("./routes/transaction")
 // Routing
 app.use("/event", eventRouter )
+app.use("/transaction", transactionRouter)
 
 // 404 middleware
 app.use((req, res) => {
