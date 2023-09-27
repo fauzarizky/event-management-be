@@ -19,7 +19,7 @@ module.exports = (sequelize, DataTypes) => {
     username: DataTypes.STRING,
     email: DataTypes.STRING,
     phoneNumber: DataTypes.STRING,
-    referralId: DataTypes.STRING,
+    referralId: DataTypes.INTEGER,
     accountType: DataTypes.ENUM("user", "event organizer")
   }, {
     sequelize,
