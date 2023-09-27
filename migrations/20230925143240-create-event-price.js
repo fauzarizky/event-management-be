@@ -11,7 +11,6 @@ module.exports = {
       },
       eventId: {
         type: Sequelize.INTEGER,
-        primaryKey: true,
         references: {
           model: "Events",
           key: "id",
@@ -19,7 +18,6 @@ module.exports = {
       },
       priceId: {
         type: Sequelize.INTEGER,
-        primaryKey: true,
         references: {
           model: "Prices",
           key: "id",
