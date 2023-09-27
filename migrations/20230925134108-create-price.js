@@ -10,13 +10,13 @@ module.exports = {
         type: Sequelize.INTEGER,
       },
       goldTicketPrice: {
-        type: Sequelize.NUMBER,
+        type: Sequelize.INTEGER,
       },
       platinumTicketPrice: {
-        type: Sequelize.NUMBER,
+        type: Sequelize.INTEGER,
       },
       diamondTicketPrice: {
-        type: Sequelize.NUMBER,
+        type: Sequelize.INTEGER,
       },
       createdAt: {
         allowNull: false,
