@@ -401,7 +401,7 @@ The Viu Scream Dates 2023 will be the first Viu Scream Dates in Indonesia,
 
 
  CREATE TABLE `db_mytix`.`registration_form` (
-  `idregistration_form` int NOT NULL AUTO_INCREMENT,
+  `registration_id` int NOT NULL AUTO_INCREMENT,
   `first_name` varchar(45) DEFAULT NULL,
   `last_name` varchar(45) DEFAULT NULL,
   `username` varchar(45) DEFAULT NULL,
@@ -409,7 +409,7 @@ The Viu Scream Dates 2023 will be the first Viu Scream Dates in Indonesia,
   `password` varchar(45) DEFAULT NULL,
   `referral_code` varchar(45) DEFAULT NULL,
   `account_type` varchar(45) DEFAULT NULL,
-  PRIMARY KEY (`idregistration_form`)
+  PRIMARY KEY (`registration_id`)
 );
 
 INSERT INTO `db_mytix`.`registration_form` (`first_name`,`last_name`,`username`,`email`,`password`,`referral_code`,`account_type`)
