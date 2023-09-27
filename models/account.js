@@ -5,8 +5,8 @@ const {
 module.exports = (sequelize, DataTypes) => {
   class Account extends Model {  
     static associate(models) {
-      Account.belongsToMany(models.Event, {through: "Event" });
-      Account.belongsToMany(models.Transaction, {through: "Transaction" });
+      Account.hasMany(models.Event, {foreignKey: "accountId" });
+      Account.hasMany(models.Transaction, {foreignKey: "accountId" });
       Account.hasOne(models.Referral, {foreignKey: "referralId"});
     }
   }

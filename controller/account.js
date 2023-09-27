@@ -10,29 +10,27 @@ const mailer = require("../lib/nodemailer");
 const JWT_SECRET_KEY = "ntar-pindah-ke-env";
 
 exports.handleRegister = async (req, res) => {
-  const { firstName, lastName, username, email, phoneNumber, referralId, accountType } =
+  const { firstName, lastName, username, email, phoneNumber, accountType } =
     req.body;
 
   try {
     const salt = await bcrypt.genSalt(10);
     const hashPassword = await bcrypt.hash(password, salt);
 
+    const referral = await Referral.create({
+        code: "MYTIX-" + username.toUpperCase(),
+      });
+
     const result = await Account.create({
       username,
       password: hashPassword,
       email,
       phoneNumber,
-      referralId,
+      referralId: referral.id,
       accountType
     });
 
-    const profile = await Profile.create({
-      lastName,
-      firstName,
-      accountId: result.id,
-    });
-
-    /*
+   
     const templateRaw = fs.readFileSync(
       __dirname +
        "/../templates/register.html",
@@ -49,7 +47,7 @@ exports.handleRegister = async (req, res) => {
       subject: "Registrasi Berhasil",
       html: emailHTML,
     });
-    */
+    
 
     res.json({
       ok: true,
