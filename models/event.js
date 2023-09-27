@@ -3,7 +3,6 @@ const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class Event extends Model {
     static associate(models) {
-      Event.belongsToMany(models.Price, {through: "eventPrice" });
     }
   }
   Event.init(
@@ -13,7 +12,9 @@ module.exports = (sequelize, DataTypes) => {
       date: DataTypes.DATE,
       location: DataTypes.ENUM("online", "jakarta", "bekasi", "surabaya", "lombok", "bali", "lampung", "malaysia"),
       description: DataTypes.CHAR,
-      image: DataTypes.STRING,
+      gold_ticket_price: DataTypes.INTEGER,
+      platinum_ticket_price: DataTypes.INTEGER,
+      diamond_ticket_price: DataTypes.INTEGER
     },
     {
       sequelize,

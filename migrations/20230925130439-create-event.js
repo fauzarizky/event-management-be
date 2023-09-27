@@ -29,6 +29,18 @@ module.exports = {
         type: Sequelize.CHAR,
         allowNull: false
       },
+      gold_ticket_price: {
+        type: Sequelize.INTEGER,
+        allowNull: false
+      },
+      platinum_ticket_price: {
+        type: Sequelize.INTEGER,
+        allowNull: false
+      },
+      diamond_ticket_price: {
+        type: Sequelize.INTEGER,
+        allowNull: false
+      },
     });
   },
   async down(queryInterface, Sequelize) {
