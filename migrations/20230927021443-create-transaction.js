@@ -47,6 +47,18 @@ module.exports = {
           key: "id",
         },
       },
+      quantityGold: {
+        type: Sequelize.INTEGER
+      },
+      quantityPlatinum: {
+        type: Sequelize.INTEGER
+      },
+      quantityDiamond: {
+        type: Sequelize.INTEGER
+      },
+      quantityTotal: {
+        type: Sequelize.INTEGER
+      },
       totalPrice: {
         type: Sequelize.INTEGER
       },

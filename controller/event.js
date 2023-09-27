@@ -10,7 +10,9 @@ exports.handleCreateEvent = async (req, res) => {
       date,
       location,
       description,
-      // Price?
+      gold_ticket_price,
+      platinum_ticket_price,
+      diamond_ticket_price
     });
 
     res.status(201).json({
