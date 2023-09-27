@@ -24,6 +24,10 @@ module.exports = (sequelize, DataTypes) => {
       paymentMethodId: DataTypes.INTEGER,
       refferalId: DataTypes.INTEGER,
       couponId: DataTypes.INTEGER,
+      quantityGold: DataTypes.INTEGER,
+      quantityPlatinum: DataTypes.INTEGER,
+      quantityDiamond: DataTypes.INTEGER,
+      quantityTotal: DataTypes.INTEGER,
       totalPrice: DataTypes.INTEGER,
     },
     {
