@@ -16,8 +16,8 @@ module.exports = (sequelize, DataTypes) => {
   EventPrice.init(
     {
       id: DataTypes.INTEGER,
-      eventId: DataTypes.NUMBER,
-      priceId: DataTypes.NUMBER,
+      eventId: DataTypes.INTEGER,
+      priceId: DataTypes.INTEGER,
     },
     {
       sequelize,

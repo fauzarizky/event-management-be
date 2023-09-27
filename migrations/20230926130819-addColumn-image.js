@@ -15,3 +15,5 @@ module.exports = {
     await queryInterface.dropTable("Profiles", "image");
   },
 };
+
+
