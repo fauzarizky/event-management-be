@@ -400,8 +400,8 @@ The Viu Scream Dates 2023 will be the first Viu Scream Dates in Indonesia,
  select * from list_event;
 
 
- CREATE TABLE `db_mytix`.`registration_form` (
-  `registration_id` int NOT NULL AUTO_INCREMENT,
+ CREATE TABLE `db_mytix`.`account` (
+  `account_id` int NOT NULL AUTO_INCREMENT,
   `first_name` varchar(45) DEFAULT NULL,
   `last_name` varchar(45) DEFAULT NULL,
   `username` varchar(45) DEFAULT NULL,
@@ -409,10 +409,10 @@ The Viu Scream Dates 2023 will be the first Viu Scream Dates in Indonesia,
   `password` varchar(45) DEFAULT NULL,
   `referral_code` varchar(45) DEFAULT NULL,
   `account_type` varchar(45) DEFAULT NULL,
-  PRIMARY KEY (`registration_id`)
+  PRIMARY KEY (`account_id`)
 );
 
-INSERT INTO `db_mytix`.`registration_form` (`first_name`,`last_name`,`username`,`email`,`password`,`referral_code`,`account_type`)
+INSERT INTO `db_mytix`.`account` (`first_name`,`last_name`,`username`,`email`,`password`,`referral_code`,`account_type`)
 VALUES 
 ('Jaka','Tarub','jakatarub42','jakatarub@pendekar.com','Goloksakt1!','mytixjaktar666','User'),
 ('Damar','Wilogo','damarpenyusup','damar@tenis.com','Tenisdulu123#','mytixdamsup','User'),
