@@ -3,21 +3,21 @@ const {
   Model
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
-  class Referral extends Model {
+  class Ticket extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      Referral.hasMany(models.Transaction, { foreignKey: "referralId" });
+      Ticket.belongsTo(models.Transaction, { foreignKey: "transactionId" });
     }
   }
-  Referral.init({
-    code: DataTypes.STRING
+  Ticket.init({
+    transactionId: DataTypes.INTEGER
   }, {
     sequelize,
-    modelName: 'Referral',
+    modelName: 'Ticket',
   });
-  return Referral;
+  return Ticket;
 };
