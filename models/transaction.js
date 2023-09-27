@@ -8,12 +8,12 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      Transaction.hasMany(models.ticket, { foreignKey: "transactionId" });
+      Transaction.hasMany(models.Ticket, { foreignKey: "transactionId" });
       Transaction.belongsTo(models.Event, { foreignKey: "eventId" });
-      Transaction.belongsTo(models.paymentMethod, { foreignKey: "paymentMethodId" });
-      Transaction.belongsTo(models.account, { foreignKey: "accountId" });
-      Transaction.belongsTo(models.coupon, { foreignKey: "couponId" });
-      Transaction.belongsTo(models.referral, { foreignKey: "referralId" });
+      Transaction.belongsTo(models.PaymentMethod, { foreignKey: "paymentMethodId" });
+      Transaction.belongsTo(models.Account, { foreignKey: "accountId" });
+      Transaction.belongsTo(models.Coupon, { foreignKey: "couponId" });
+      Transaction.belongsTo(models.Referral, { foreignKey: "referralId" });
     }
   }
   Transaction.init(
