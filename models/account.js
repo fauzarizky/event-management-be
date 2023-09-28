@@ -18,6 +18,7 @@ module.exports = (sequelize, DataTypes) => {
     phoneNumber: DataTypes.STRING,
     referralId: DataTypes.INTEGER,
     accountType: DataTypes.ENUM("user", "event organizer")
+    
   }, {
     sequelize,
     modelName: 'Account',
