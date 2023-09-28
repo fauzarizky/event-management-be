@@ -14,7 +14,7 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   PaymentMethod.init({
-    paymentMethodName: DataTypes.STRING,
+    paymentMethodName: DataTypes.ENUM("Credit Card", "BCA Virtual Account", "Mandiri Virtual Account", "BNI Virtual Account", "GOPAY", "OVO", "DANA"),
     cardNumber: DataTypes.STRING,
     cardHolder: DataTypes.STRING,
     cardMonth: DataTypes.STRING,
