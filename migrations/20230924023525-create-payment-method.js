@@ -10,7 +10,7 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       paymentMethodName: {
-        type: Sequelize.STRING
+        type: Sequelize.ENUM("Credit Card", "BCA Virtual Account", "Mandiri Virtual Account", "BNI Virtual Account", "GOPAY", "OVO", "DANA")
       },
       cardNumber: {
         type: Sequelize.STRING

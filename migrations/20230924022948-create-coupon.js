@@ -12,6 +12,9 @@ module.exports = {
       code: {
         type: Sequelize.STRING
       },
+      discount: {
+        type: Sequelize.DOUBLE
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE

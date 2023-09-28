@@ -2,6 +2,8 @@ const express = require("express");
 const router = express.Router();
 
 const authController = require("../controller/account");
+const authMiddleware = require("../middleware/auth");
+const authValidator = require("../middleware/validation/auth");
 
 
 router.post(
@@ -15,7 +17,6 @@ router.post("/", authController.handleLogin);
 router.patch(
   "/login",
   authMiddleware.validateToken,
-  authController.updateAccount
 );
 
 
