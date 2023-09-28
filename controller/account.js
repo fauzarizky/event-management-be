@@ -32,6 +32,7 @@ exports.handleRegister = async (req, res) => {
     });
 
    
+    /*
     const templateRaw = fs.readFileSync(
       __dirname +
        "/../templates/register.html",
@@ -48,6 +49,7 @@ exports.handleRegister = async (req, res) => {
       subject: "Registrasi Berhasil",
       html: emailHTML,
     });
+    */
     
 
     res.json({
@@ -82,7 +84,6 @@ exports.handleLogin = async (req, res) => {
           password: userIdentity,
         },
       },
-      include: Profile,
     });
 
     if (!account) {
@@ -111,13 +112,14 @@ exports.handleLogin = async (req, res) => {
       data: {
         token,
         profile: {
-        firstName: account.Profile.firstName,
-          lastName: account.Profile.lastName,
+        firstName: account.firstName,
+          lastName: account.lastName,
           email: account.email,
           username: account.username,
           phoneNumber: account.phoneNumber,
           referralId: account.referralId,
           accountType: account.accountType,
+          accountPoint: account.accountPoint,
         },
       },
     });
@@ -129,63 +131,13 @@ exports.handleLogin = async (req, res) => {
   }
 };
 
-exports.updateProfile = async (req, res) => {
-  const accountId = req.user.id;
-  const { bio, email, username } = req.body;
-  try {
-    const account = await Account.findByPk(accountId);
-    if (!account) {
-      res.status(400).json({
-        ok: false,
-        message: "account not found",
-      });
-      return;
-    }
-
-    if (email) {
-      account.email = email;
-      account.isVerified = false;
-    }
-    if (username) {
-      account.username = username;
-    }
-
-    await account.save();
-
-    const profile = await account.getProfile();
-    if (bio) {
-      profile.bio = bio;
-    }
-    await profile.save();
-
-    return res.json({
-      ok: true,
-      data: {
-        email: account.email,
-        username: account.username,
-        phoneNumber: account.phoneNumber,
-        isVerified: account.isVerified,
-        firstName: profile.firstName,
-        lastName: profile.lastName,
-        bio: profile.bio,
-      },
-    });
-  } catch (error) {
-    res.status(400).json({
-      ok: false,
-      message: String(error),
-    });
-    return;
-  }
-};
-
 
 exports.handleUploadPhotoProfile = async (req, res) => {
 const {filename} = req.file;
 const {id: accountId} = req.user;
 
 try {
-const profile = await Profile.findOne({ where: { accountId, } }); 
+const profile = await Account.findOne({ where: { accountId, } }); 
 if (profile.profilePicture) {
   fs.rmSync(__dirname + "/../public/" + profile.profilePicture);
 }

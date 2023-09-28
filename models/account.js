@@ -14,10 +14,12 @@ module.exports = (sequelize, DataTypes) => {
     firstName: DataTypes.STRING,
     lastName: DataTypes.STRING,
     username: DataTypes.STRING,
+    password: DataTypes.STRING,
     email: DataTypes.STRING,
     phoneNumber: DataTypes.STRING,
     referralId: DataTypes.INTEGER,
-    accountType: DataTypes.ENUM("user", "event organizer")
+    accountType: DataTypes.ENUM("user", "event organizer"),
+    accountPoint: DataTypes.INTEGER
     
   }, {
     sequelize,
