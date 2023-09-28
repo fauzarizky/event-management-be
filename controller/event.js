@@ -1,10 +1,11 @@
 const { Event } = require("../models");
+const { Op } = require("sequelize");
 
 exports.handleCreateEvent = async (req, res) => {
-  const { name, type, date, location, description } = req.body;
+  const { name, type, date, location, description, gold_ticket_price, platinum_ticket_price, diamond_ticket_price } = req.body;
 
   try {
-    await Event.create({
+    const result = await Event.create({
       name,
       type,
       date,
@@ -12,13 +13,14 @@ exports.handleCreateEvent = async (req, res) => {
       description,
       gold_ticket_price,
       platinum_ticket_price,
-      diamond_ticket_price
+      diamond_ticket_price,
     });
 
     res.status(201).json({
-        ok: true,
-        message: "Event created!",
-      });
+      ok: true,
+      message: "Event created!",
+      detail: result,
+    });
   } catch (error) {
     console.error(error);
     res.status(400).json({
@@ -38,8 +40,30 @@ exports.getAllEvents = async (req, res) => {
     });
   } catch (error) {
     res.status(400).json({
-        ok: false,
-        msg: String(error)
-    })
+      ok: false,
+      msg: String(error),
+    });
+  }
+};
+
+exports.getSpesificEvent = async (req, res) => {
+  try {
+    const { event } = req.params;
+
+    const data = await Event.findAll({
+      where: {
+        event,
+      },
+    });
+
+    res.status(200).json({
+      ok: true,
+      data,
+    });
+  } catch (error) {
+    res.status(400).json({
+      ok: false,
+      msg: String(error),
+    });
   }
 };
