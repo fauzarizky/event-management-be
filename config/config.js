@@ -1,7 +1,7 @@
 module.exports = {
   development: {
     username: "root",
-    password: "anggara123",
+    password: "fauza2023",
     database: "db_mytix",
     host: "127.0.0.1",
     dialect: "mysql",
