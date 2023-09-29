@@ -1,5 +1,5 @@
 const jwt = require("jsonwebtoken");
-const JWT_SECRET_KEY = "ntar-pindah-ke-env";
+const JWT_SECRET_KEY = "belom-diganti";
 
 exports.validateToken = (req, res, next) => {
   let token = req.headers.authorization;
