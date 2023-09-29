@@ -8,10 +8,12 @@ const eventRouter = require("./routes/event")
 const transactionRouter = require("./routes/transaction")
 const authRouter = require("./routes/auth")
 
+
 // Routing
 app.use("/event", eventRouter )
 app.use("/purchase", transactionRouter)
 app.use("/auth", authRouter)
+
 
 // 404 middleware
 app.use((req, res) => {

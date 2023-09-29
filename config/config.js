@@ -5,6 +5,11 @@ module.exports = {
     database: "db_mytix",
     host: "127.0.0.1",
     dialect: "mysql",
+     dialectOptions: {
+      useUtc: false,
+    },
+    timezone: "+07:00",
+
   },
   test: {
     username: "root",
