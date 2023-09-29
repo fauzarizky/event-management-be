@@ -39,7 +39,8 @@ module.exports = {
         type: Sequelize.ENUM("user", "event organizer")  
       },
       accountPoint: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
+        defaultValue: 0,
       },
       createdAt: {
         allowNull: false,

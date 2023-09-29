@@ -101,7 +101,7 @@ exports.handleLogin = async (req, res) => {
       });
       return;
     }
-    const payload = { id: account.id, isVerified: account.isVerified };
+    const payload = { id: account.id, accountType: account.accountType };
     const token = jwt.sign(payload, JWT_SECRET_KEY, {
       expiresIn: "1h",
     });

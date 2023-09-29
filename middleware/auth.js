@@ -38,3 +38,16 @@ exports.validateToken = (req, res, next) => {
     });
   }
 };
+
+
+exports.checkRole = (req,res,next ) => {
+  if (req.user.accountType === "event organizer") {
+    next();
+    return;
+  }
+
+  res.status(401).json({
+    ok: false,
+    message: "invalid account role type"
+  })
+}
