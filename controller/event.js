@@ -3,9 +3,12 @@ const { Op } = require("sequelize");
 
 exports.handleCreateEvent = async (req, res) => {
   const { name, type, date, location, description, gold_ticket_price, platinum_ticket_price, diamond_ticket_price } = req.body;
+  const { filename } = req.file;
+  console.log(req.file);
 
   try {
     const result = await Event.create({
+      image: filename,
       name,
       type,
       date,
@@ -52,7 +55,9 @@ exports.getSpesificEvent = async (req, res) => {
 
     const data = await Event.findAll({
       where: {
-        event,
+        name: {
+          [Op.like]: `%${event}`,
+        },
       },
     });
 
@@ -62,6 +67,28 @@ exports.getSpesificEvent = async (req, res) => {
     });
   } catch (error) {
     res.status(400).json({
+      ok: false,
+      msg: String(error),
+    });
+  }
+};
+
+exports.getEventByLocation = async (req, res) => {
+  try {
+    const { location } = req.params;
+
+    const data = await Event.findAll({
+      where: {
+        location,
+      },
+    });
+
+    res.status(200).json({
+      ok: true,
+      data,
+    });
+  } catch (error) {
+    res.status(404).json({
       ok: false,
       msg: String(error),
     });
