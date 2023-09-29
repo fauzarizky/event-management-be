@@ -10,7 +10,7 @@ const authRouter = require("./routes/auth")
 
 // Routing
 app.use("/event", eventRouter )
-app.use("/transaction", transactionRouter)
+app.use("/purchase", transactionRouter)
 app.use("/auth", authRouter)
 
 // 404 middleware
