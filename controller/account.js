@@ -57,8 +57,8 @@ exports.handleRegister = async (req, res) => {
       data: {
         username: result.username,
         email: result.email,
-        firstName: profile.firstName,
-        lastName: profile.lastName,
+        firstName: result.firstName,
+        lastName: result.lastName,
       },
     });
 console.log(resultEmail);
