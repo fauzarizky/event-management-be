@@ -9,7 +9,6 @@ exports.handleCreateTransaction = async (req, res) => {
     referralCode,
     couponCode,
     paymentMethod,
-    userId, // BELOM FIX NUNGGU TOKEN BAGIANNYA ANIDA
     cardNumber,
     cardHolder,
     cardMonth,
@@ -103,13 +102,14 @@ exports.handleCreateTransaction = async (req, res) => {
     }
 
     const paymentMethodRecord = await PaymentMethod.create({
+      paymentMethodName: paymentMethod,
       cardNumber,
       cardHolder,
       cardMonth,
       cardYear,
       cardCvv,
       vaNumber, 
-      eWalletNumber, 
+      eWalletNumber,
     });
 
     // Step 7: Calculate the base total price without coupon discount
@@ -126,7 +126,8 @@ exports.handleCreateTransaction = async (req, res) => {
 
     // Step 9: Create a new transaction and associate it with the PaymentMethod record
     const transaction = await Transaction.create({
-      eventId: event.id, // Assuming 'eventId' is a foreign key in Transaction model
+      eventId: event.id,
+      accountId: req.user.id, // Assuming 'eventId' is a foreign key in Transaction model
       quantityGold,
       quantityPlatinum,
       quantityDiamond,
