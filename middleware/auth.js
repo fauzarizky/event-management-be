@@ -51,3 +51,14 @@ exports.checkRole = (req,res,next ) => {
     message: "invalid account role type"
   })
 }
+exports.checkRoleUser = (req,res,next ) => {
+  if (req.user.accountType === "user") {
+    next();
+    return;
+  }
+
+  res.status(401).json({
+    ok: false,
+    message: "invalid account role type"
+  })
+}
