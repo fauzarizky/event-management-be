@@ -3,8 +3,8 @@ const { Op } = require("sequelize");
 
 exports.handleCreateEvent = async (req, res) => {
   const { name, type, date, location, description, gold_ticket_price, platinum_ticket_price, diamond_ticket_price } = req.body;
-  const { filename } = req.file;
   console.log(req.file);
+  const { filename } = req.file;
 
   try {
     const result = await Event.create({
