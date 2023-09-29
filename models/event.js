@@ -10,6 +10,7 @@ module.exports = (sequelize, DataTypes) => {
     {
       name: DataTypes.CHAR(100),
       accountId: DataTypes.INTEGER,
+      image: DataTypes.STRING,
       type: DataTypes.ENUM("music", "webinar", "sports"),
       date: DataTypes.DATE,
       location: DataTypes.ENUM("online", "jakarta", "bekasi", "surabaya", "lombok", "bali", "lampung", "malaysia"),
