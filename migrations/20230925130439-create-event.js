@@ -15,7 +15,7 @@ module.exports = {
       },
       accountId:{
         type: Sequelize.INTEGER,
-        allowNull: false
+        allowNull: true
       },
       type: {
         type: Sequelize.ENUM('music', 'webinar', 'sports'),
