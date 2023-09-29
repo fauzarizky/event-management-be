@@ -246,37 +246,38 @@ exports.handlePayTicket = async (req, res) => {
     if (transaction.referralId) {
       const referral = await Referral.findOne({
         where: { id: transaction.referralId },
-        attributes: ["id", "code", "createdAt", "updatedAt"], // Explicitly specify the attributes to select
+        attributes: ["id", "code", "createdAt", "updatedAt"]
       });
-
+    
       if (referral && referral.userId !== transaction.accountId) {
-        // Valid referral code is used (and not the user's own referral code), add 100 points to the account's 'points' field
-        const account = await Account.findOne({
-          where: { id: transaction.accountId },
+        // Valid referral code is used (and not the user's own referral code)
+        
+        // Temukan akun yang merujuk kode referensi
+        const referredAccount = await Account.findOne({
+          where: { id: referral.id },
         });
-
-        if (account) {
-          account.accountPoint += 100;
-          await account.save();
-
-          // Update the ticket to set isPayed to true
-          ticket.isPayed = true;
-          await ticket.save();
-
-          // Create a custom message indicating the awarding of points
-          const awardMessage = `You are using ${account.username} referral code, and they were awarded 100 points!`;
-
-          // Return a success response with the custom award message
-          return res.status(200).json({
-            ok: true,
-            message: "Payment successful",
-            ticket: ticket,
-            awardMessage: awardMessage,
-          });
+    
+        if (referredAccount) {
+          referredAccount.accountPoint += 100;
+          await referredAccount.save();
         }
+    
+        // Update the ticket to set isPayed to true
+        ticket.isPayed = true;
+        await ticket.save();
+    
+        // Create a custom message indicating the awarding of points
+        const awardMessage = `You are using ${referredAccount.username}'s referral code, and they were awarded 100 points!`;
+    
+        // Return a success response with the custom award message
+        return res.status(200).json({
+          ok: true,
+          message: "Payment successful",
+          ticket: ticket,
+          awardMessage: awardMessage,
+        });
       }
     }
-
     // If no valid referral code is used, if the referral is not found, or if it belongs to the same user, return a success response without adding points
     // Update the ticket to set isPayed to true
     ticket.isPayed = true;
