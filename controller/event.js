@@ -1,4 +1,4 @@
-const { Event } = require("../models");
+const { Event} = require("../models");
 const { Op } = require("sequelize");
 
 exports.handleCreateEvent = async (req, res) => {
@@ -6,8 +6,12 @@ exports.handleCreateEvent = async (req, res) => {
   console.log(req.file);
   const { filename } = req.file;
 
+
+
   try {
+    
     const result = await Event.create({
+      accountId: req.user.id,
       image: filename,
       name,
       type,
