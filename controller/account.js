@@ -61,7 +61,6 @@ exports.handleRegister = async (req, res) => {
         lastName: result.lastName,
       },
     });
-console.log(resultEmail);
 
   } catch (error) {
     console.error(error);
