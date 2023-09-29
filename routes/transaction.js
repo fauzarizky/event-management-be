@@ -6,7 +6,7 @@ const transactionController = require("../controller/transaction")
 
 router.post(
     "/:eventId",
-    authMiddleware.validateToken, transactionController.handleCreateTransaction
+    authMiddleware.validateToken, authMiddleware.checkRoleUser, transactionController.handleCreateTransaction
   );
 
 module.exports = router;

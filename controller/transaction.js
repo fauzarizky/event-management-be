@@ -1,7 +1,7 @@
-const { Event, Transaction, Referral, Coupon, Account, PaymentMethod } = require("../models");
+const { Event, Transaction, Referral, Coupon, Account, PaymentMethod, Ticket } = require("../models");
 
 exports.handleCreateTransaction = async (req, res) => {
-  const eventId = req.params.eventid;
+  const eventId = req.params.eventId;
   const {
     quantityGold,
     quantityPlatinum,
@@ -19,7 +19,7 @@ exports.handleCreateTransaction = async (req, res) => {
   try {
     // Step 1: Retrieve the user's account based on userId
     const account = await Account.findOne({
-      where: { id: userId }, // Assuming the primary key of Account model is 'id'
+      where: { id: req.user.id }, // Assuming the primary key of Account model is 'id'
     });
 
     if (!account) {
@@ -116,7 +116,19 @@ exports.handleCreateTransaction = async (req, res) => {
     const goldTicketPrice = event.gold_ticket_price;
     const platinumTicketPrice = event.platinum_ticket_price;
     const diamondTicketPrice = event.diamond_ticket_price;
-    const baseTotalPrice = quantityGold * goldTicketPrice + quantityPlatinum * platinumTicketPrice + quantityDiamond * diamondTicketPrice;
+    let baseTotalPrice = 0;
+    if (quantityGold) {
+      baseTotalPrice += quantityGold * goldTicketPrice;
+    } 
+
+    if (quantityPlatinum) {
+      baseTotalPrice += quantityPlatinum * platinumTicketPrice;
+    }
+
+    if (quantityDiamond) {
+      baseTotalPrice += quantityDiamond * diamondTicketPrice;
+    }
+    
 
     // Step 8: Calculate the total price with coupon discount (if applicable)
     let totalPrice = baseTotalPrice;
