@@ -11,13 +11,26 @@ const JWT_SECRET_KEY = "ntar-pindah-ke-env";
 exports.handleRegister = async (req, res) => {
   const { firstName, lastName, username, password, email, phoneNumber, accountType } =
     req.body;
+    
+    const existingAccount = await Account.findOne({
+      where: {
+        [Op.or]: [{ username }, { email }, {phoneNumber}],
+      },
+    });
+  
+    if (existingAccount) {
+      return res.status(400).json({
+        ok: false,
+        error: "Username, email atau nomor telepon sudah digunakan",
+      });
+    }
 
   try {
     const salt = await bcrypt.genSalt(10);
     const hashPassword = await bcrypt.hash(password, salt);
 
     const referral = await Referral.create({
-        code: "MYTIX-" + username.toUpperCase(),
+        code: "MYTIX" + username.toUpperCase(),
       });
 
     const result = await Account.create({
@@ -59,6 +72,7 @@ exports.handleRegister = async (req, res) => {
         email: result.email,
         firstName: result.firstName,
         lastName: result.lastName,
+        referralCode: "MYTIX" + result.username.toUpperCase()
       },
     });
 

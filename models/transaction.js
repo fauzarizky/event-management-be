@@ -22,7 +22,7 @@ module.exports = (sequelize, DataTypes) => {
       accountId: DataTypes.INTEGER,
       transactionDate: DataTypes.DATE,
       paymentMethodId: DataTypes.INTEGER,
-      refferalId: DataTypes.INTEGER,
+      referralId: DataTypes.INTEGER,
       couponId: DataTypes.INTEGER,
       quantityGold: DataTypes.INTEGER,
       quantityPlatinum: DataTypes.INTEGER,

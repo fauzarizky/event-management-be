@@ -14,7 +14,7 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   Referral.init({
-    code: DataTypes.INTEGER,
+    code: DataTypes.STRING,
   }, {
     sequelize,
     modelName: 'Referral',
