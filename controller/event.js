@@ -39,8 +39,7 @@ exports.handleCreateEvent = async (req, res) => {
 
 exports.getAllEvents = async (req, res) => {
   try {
-    const events = Event.findAll();
-
+    const events = await Event.findAll();
     res.status(200).json({
       ok: true,
       events,
