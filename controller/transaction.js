@@ -103,13 +103,14 @@ exports.handleCreateTransaction = async (req, res) => {
     }
 
     const paymentMethodRecord = await PaymentMethod.create({
+      paymentMethodName: paymentMethod,
       cardNumber,
       cardHolder,
       cardMonth,
       cardYear,
       cardCvv,
       vaNumber, 
-      eWalletNumber, 
+      eWalletNumber,
     });
 
     // Step 7: Calculate the base total price without coupon discount
