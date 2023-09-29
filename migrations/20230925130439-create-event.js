@@ -13,6 +13,10 @@ module.exports = {
         allowNull: false,
         unique: true
       },
+      accountId:{
+        type: Sequelize.INTEGER,
+        allowNull: false
+      },
       type: {
         type: Sequelize.ENUM('music', 'webinar', 'sports'),
         allowNull: false,
@@ -40,6 +44,14 @@ module.exports = {
       diamond_ticket_price: {
         type: Sequelize.INTEGER,
         allowNull: false
+      },
+      createdAt: {
+        allowNull: false,
+        type: Sequelize.DATE,
+      },
+      updatedAt: {
+        allowNull: false,
+        type: Sequelize.DATE,
       },
     });
   },

@@ -13,11 +13,11 @@ authValidator.applyRegisterValidation,
  authController.handleRegister
  );
 
-router.post("/", authController.handleLogin);
-router.patch(
-  "/login",
-  authMiddleware.validateToken,
-);
+ router.post("/", authController.handleLogin);
+ router.patch(
+   "/account",
+   authMiddleware.validateToken
+ );
 
 
 module.exports = router;

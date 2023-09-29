@@ -18,6 +18,10 @@ module.exports = {
       username: {
         type: Sequelize.STRING
       },
+      password: {
+        type: Sequelize.STRING,
+        allowNull: false,
+      },
       email: {
         type: Sequelize.STRING
       },
@@ -33,6 +37,9 @@ module.exports = {
       },
       accountType: {
         type: Sequelize.ENUM("user", "event organizer")  
+      },
+      accountPoint: {
+        type: Sequelize.INTEGER
       },
       createdAt: {
         allowNull: false,
