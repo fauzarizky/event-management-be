@@ -14,7 +14,8 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   Ticket.init({
-    transactionId: DataTypes.INTEGER
+    transactionId: DataTypes.INTEGER,
+    isPayed: DataTypes.BOOLEAN,
   }, {
     sequelize,
     modelName: 'Ticket',

@@ -16,6 +16,9 @@ module.exports = {
           key: "id",
         },
       },
+      isPayed : {
+        type: Sequelize.BOOLEAN,
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE
