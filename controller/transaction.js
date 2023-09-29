@@ -150,6 +150,11 @@ exports.handleCreateTransaction = async (req, res) => {
       quantities.diamond = quantityDiamond;
     }
 
+    await Ticket.create({
+      transactionId: transaction.id,
+      isPayed: false,
+    });
+    
     // Step 11: Prepare the response object with relevant quantities and payment method details
     const responseObj = {
       ok: true,
