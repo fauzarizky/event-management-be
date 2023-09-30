@@ -45,7 +45,7 @@ exports.getAllEvents = async (req, res) => {
       include: [
         {
           model: Account,
-          attributes: ["username"], 
+          attributes: ["username"],
         },
       ],
     });
@@ -64,7 +64,7 @@ exports.getAllEvents = async (req, res) => {
       diamond_ticket_price: event.diamond_ticket_price,
       createdAt: event.createdAt,
       updatedAt: event.updatedAt,
-      OrganizedBy: event.Account.username, 
+      OrganizedBy: event.Account.username,
     }));
 
     res.status(200).json({
@@ -83,17 +83,39 @@ exports.getSpesificEvent = async (req, res) => {
   try {
     const { event } = req.params;
 
-    const data = await Event.findAll({
+    const datas = await Event.findAll({
       where: {
         name: {
           [Op.like]: `%${event}`,
         },
       },
+      include: [
+        {
+          model: Account,
+          attributes: ["username"],
+        },
+      ],
     });
+
+    const resData = datas.map((data) => ({
+      id: data.id,
+      name: data.name,
+      image: data.image,
+      type: data.type,
+      date: data.date,
+      location: data.location,
+      description: data.description,
+      gold_ticket_price: data.gold_ticket_price,
+      platinum_ticket_price: data.platinum_ticket_price,
+      diamond_ticket_price: data.diamond_ticket_price,
+      createdAt: data.createdAt,
+      updatedAt: data.updatedAt,
+      OrganizedBy: data.Account.username,
+    }));
 
     res.status(200).json({
       ok: true,
-      data,
+      data: resData,
     });
   } catch (error) {
     res.status(400).json({
@@ -107,15 +129,37 @@ exports.getEventByLocation = async (req, res) => {
   try {
     const { location } = req.params;
 
-    const data = await Event.findAll({
+    const datas = await Event.findAll({
       where: {
         location,
       },
+      include: [
+        {
+          model: Account,
+          attributes: ["username"],
+        },
+      ],
     });
+
+    const resData = datas.map((data) => ({
+      id: data.id,
+      name: data.name,
+      image: data.image,
+      type: data.type,
+      date: data.date,
+      location: data.location,
+      description: data.description,
+      gold_ticket_price: data.gold_ticket_price,
+      platinum_ticket_price: data.platinum_ticket_price,
+      diamond_ticket_price: data.diamond_ticket_price,
+      createdAt: data.createdAt,
+      updatedAt: data.updatedAt,
+      OrganizedBy: data.Account.username,
+    }));
 
     res.status(200).json({
       ok: true,
-      data,
+      data: resData,
     });
   } catch (error) {
     res.status(404).json({
@@ -129,15 +173,39 @@ exports.getEventById = async (req, res) => {
   try {
     const { id } = req.params;
 
-    const data = await Event.findAll({
+    const datas = await Event.findAll({
       where: {
         id,
       },
+      include: [
+        {
+          model: Account,
+          attributes: ["username"],
+        },
+      ],
     });
+
+    const resData = datas.map((data) => ({
+      id: data.id,
+      name: data.name,
+      image: data.image,
+      type: data.type,
+      date: data.date,
+      location: data.location,
+      description: data.description,
+      gold_ticket_price: data.gold_ticket_price,
+      platinum_ticket_price: data.platinum_ticket_price,
+      diamond_ticket_price: data.diamond_ticket_price,
+      createdAt: data.createdAt,
+      updatedAt: data.updatedAt,
+      OrganizedBy: data.Account.username,
+    }));
+
     res.status(200).json({
       ok: true,
-      data,
+      data: resData,
     });
+
   } catch (error) {
     res.status(404).json({
       ok: false,
