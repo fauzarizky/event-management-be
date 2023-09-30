@@ -1,4 +1,4 @@
-const { Event } = require("../models");
+const { Event, Account } = require("../models");
 const { Op } = require("sequelize");
 const { fs } = require("fs");
 
@@ -41,10 +41,35 @@ exports.handleCreateEvent = async (req, res) => {
 
 exports.getAllEvents = async (req, res) => {
   try {
-    const events = await Event.findAll();
+    const events = await Event.findAll({
+      include: [
+        {
+          model: Account,
+          attributes: ["username"], 
+        },
+      ],
+    });
+
+    // Transform the data
+    const responseObj = events.map((event) => ({
+      id: event.id,
+      name: event.name,
+      image: event.image,
+      type: event.type,
+      date: event.date,
+      location: event.location,
+      description: event.description,
+      gold_ticket_price: event.gold_ticket_price,
+      platinum_ticket_price: event.platinum_ticket_price,
+      diamond_ticket_price: event.diamond_ticket_price,
+      createdAt: event.createdAt,
+      updatedAt: event.updatedAt,
+      OrganizedBy: event.Account.username, 
+    }));
+
     res.status(200).json({
       ok: true,
-      events,
+      data: responseObj,
     });
   } catch (error) {
     res.status(400).json({

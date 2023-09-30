@@ -3,7 +3,7 @@ const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class Event extends Model {
     static associate(models) {
-      // This should be 1 to M relation
+      Event.belongsTo(models.Account, { foreignKey: "AccountId" });
     }
   }
   Event.init(
