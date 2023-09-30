@@ -184,6 +184,8 @@ exports.handleCreateTransaction = async (req, res) => {
       message: "Transaction created!",
       event: event.name,
       quantities,
+      referral: referral ? referral.code : "No referral code applied",
+      discount: coupon ? coupon.discount + "%" : "No discount code applied",
       totalPrice: rupiahFormat(totalPrice),
       paymentMethod: {
         name: paymentMethod,

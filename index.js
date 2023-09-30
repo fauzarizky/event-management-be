@@ -7,12 +7,14 @@ app.use(express.json());
 const eventRouter = require("./routes/event")
 const transactionRouter = require("./routes/transaction")
 const authRouter = require("./routes/auth")
+const myTicketRouter = require("./routes/myticket")
 
 
 // Routing
 app.use("/event", eventRouter )
 app.use("/purchase", transactionRouter)
 app.use("/auth", authRouter)
+app.use("/myticket", myTicketRouter)
 
 
 // 404 middleware
