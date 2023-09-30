@@ -1,15 +1,17 @@
-const { Event} = require("../models");
+const { Event } = require("../models");
 const { Op } = require("sequelize");
+const { fs } = require("fs");
 
 exports.handleCreateEvent = async (req, res) => {
   const { name, type, date, location, description, gold_ticket_price, platinum_ticket_price, diamond_ticket_price } = req.body;
   console.log(req.file);
   const { filename } = req.file;
 
-
-
   try {
-    
+    if (profile.profilePicture) {
+      //delete old picture
+      fs.rmSync(__dirname + "/../public/" + profile.profilePicture);
+    }
     const result = await Event.create({
       accountId: req.user.id,
       image: filename,
@@ -86,6 +88,27 @@ exports.getEventByLocation = async (req, res) => {
       },
     });
 
+    res.status(200).json({
+      ok: true,
+      data,
+    });
+  } catch (error) {
+    res.status(404).json({
+      ok: false,
+      msg: String(error),
+    });
+  }
+};
+
+exports.getEventById = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const data = await Event.findAll({
+      where: {
+        id,
+      },
+    });
     res.status(200).json({
       ok: true,
       data,
