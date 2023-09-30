@@ -6,7 +6,7 @@ const { Account, Referral } = require("../models");
 const fs = require("fs");
 
 
-const JWT_SECRET_KEY = "ntar-pindah-ke-env";
+const JWT_SECRET_KEY = process.env.JWT_SECRET_KEY;
 
 exports.handleRegister = async (req, res) => {
   const { firstName, lastName, username, password, email, phoneNumber, accountType } =

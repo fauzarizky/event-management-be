@@ -1,5 +1,5 @@
 const jwt = require("jsonwebtoken");
-const JWT_SECRET_KEY = "ntar-pindah-ke-env";
+const JWT_SECRET_KEY = process.env.JWT_SECRET_KEY;
 
 exports.validateToken = (req, res, next) => {
   let token = req.headers.authorization;
