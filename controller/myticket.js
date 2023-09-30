@@ -75,9 +75,6 @@ exports.handleGetMyTicket = async (req, res) => {
         responseObj.eWalletNumber = ticket.Transaction.PaymentMethod.eWalletNumber; 
       }
       
-
-    
-
       return responseObj;
     });
 
