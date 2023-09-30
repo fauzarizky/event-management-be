@@ -6,6 +6,9 @@ app.use(express.json());
 
 const eventRouter = require("./routes/event")
 const transactionRouter = require("./routes/transaction")
+require("dotenv").config({
+  path: __dirname + "/.env",
+});
 const authRouter = require("./routes/auth")
 const myTicketRouter = require("./routes/myticket")
 
