@@ -1,5 +1,5 @@
 const jwt = require("jsonwebtoken");
-const JWT_SECRET_KEY = "belom-diganti";
+const JWT_SECRET_KEY = process.env.JWT_SECRET_KEY;
 
 exports.validateToken = (req, res, next) => {
   let token = req.headers.authorization;
@@ -42,6 +42,17 @@ exports.validateToken = (req, res, next) => {
 
 exports.checkRole = (req,res,next ) => {
   if (req.user.accountType === "event organizer") {
+    next();
+    return;
+  }
+
+  res.status(401).json({
+    ok: false,
+    message: "invalid account role type"
+  })
+}
+exports.checkRoleUser = (req,res,next ) => {
+  if (req.user.accountType === "user") {
     next();
     return;
   }

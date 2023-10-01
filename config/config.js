@@ -1,10 +1,18 @@
+require("dotenv").config({
+  path: __dirname + "/../.env"
+})
+
 module.exports = {
   development: {
-    username: "root",
-    password: "fauza2023",
-    database: "db_mytix",
-    host: "127.0.0.1",
+    username: process.env.DB_USERNAME,
+    password: process.env.DB_PASS,
+    database: process.env.DB_NAME,
+    host: process.env.DB_HOST,
     dialect: "mysql",
+    dialectOptions: {
+      useUtc: false,
+    },
+    timezone: "+07:00",
   },
   test: {
     username: "root",

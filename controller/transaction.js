@@ -1,25 +1,13 @@
-const { Event, Transaction, Referral, Coupon, Account, PaymentMethod } = require("../models");
+const { Event, Transaction, Referral, Coupon, Account, PaymentMethod, Ticket } = require("../models");
 
 exports.handleCreateTransaction = async (req, res) => {
-  const eventId = req.params.eventid;
-  const {
-    quantityGold,
-    quantityPlatinum,
-    quantityDiamond,
-    referralCode,
-    couponCode,
-    paymentMethod,
-    cardNumber,
-    cardHolder,
-    cardMonth,
-    cardYear,
-    cardCvv,
-  } = req.body;
+  const eventId = req.params.eventId;
+  const { quantityGold, quantityPlatinum, quantityDiamond, referralCode, couponCode, paymentMethod, cardNumber, cardHolder, cardMonth, cardYear, cardCvv } = req.body;
 
   try {
     // Step 1: Retrieve the user's account based on userId
     const account = await Account.findOne({
-      where: { id: userId }, // Assuming the primary key of Account model is 'id'
+      where: { id: req.user.id }, // Assuming the primary key of Account model is 'id'
     });
 
     if (!account) {
@@ -49,6 +37,7 @@ exports.handleCreateTransaction = async (req, res) => {
     if (referralCode) {
       referral = await Referral.findOne({
         where: { code: referralCode },
+        attributes: ["id", "code", "createdAt", "updatedAt"], // Explicitly specify the attributes to select
       });
 
       if (!referral) {
@@ -57,8 +46,15 @@ exports.handleCreateTransaction = async (req, res) => {
           message: "Referral code not valid",
         });
       }
-    }
 
+      // Check if the referral belongs to the same user
+      if (referral.id === req.user.id) {
+        return res.status(400).json({
+          ok: false,
+          message: "You cannot use your own referral code",
+        });
+      }
+    }
     // Step 4: Validate coupon code (if provided)
     let coupon = null;
     if (couponCode) {
@@ -88,17 +84,27 @@ exports.handleCreateTransaction = async (req, res) => {
     // Step 6: Create a new PaymentMethod record with vaNumber and eWalletNumber
     let vaNumber = null;
     let eWalletNumber = null;
+    let cardNumber = null;
+    let cardHolder = null;
+    let cardMonth = null;
+    let cardYear = null;
+    let cardCvv = null;
 
-    if (["BCA Virtual Account", "Mandiri Virtual Account", "BNI Virtual Account"].includes(paymentMethod)) {
-      if (paymentMethod === "BCA Virtual Account") {
-        vaNumber = "88000" + account.phoneNumber;
-      } else if (paymentMethod === "Mandiri Virtual Account") {
-        vaNumber = "90012" + account.phoneNumber;
-      } else if (paymentMethod === "BNI Virtual Account") {
-        vaNumber = "8005" + account.phoneNumber;
-      }
+    if (paymentMethod === "BCA Virtual Account") {
+      vaNumber = "88000" + account.phoneNumber;
+    } else if (paymentMethod === "Mandiri Virtual Account") {
+      vaNumber = "90012" + account.phoneNumber;
+    } else if (paymentMethod === "BNI Virtual Account") {
+      vaNumber = "8005" + account.phoneNumber;
     } else if (["GOPAY", "OVO", "DANA"].includes(paymentMethod)) {
       eWalletNumber = account.phoneNumber;
+    } else if (paymentMethod === "Credit Card") {
+      // Set card fields from req.body if paymentMethod is "Credit Card"
+      cardNumber = req.body.cardNumber;
+      cardHolder = req.body.cardHolder;
+      cardMonth = req.body.cardMonth;
+      cardYear = req.body.cardYear;
+      cardCvv = req.body.cardCvv;
     }
 
     const paymentMethodRecord = await PaymentMethod.create({
@@ -108,7 +114,7 @@ exports.handleCreateTransaction = async (req, res) => {
       cardMonth,
       cardYear,
       cardCvv,
-      vaNumber, 
+      vaNumber,
       eWalletNumber,
     });
 
@@ -116,7 +122,18 @@ exports.handleCreateTransaction = async (req, res) => {
     const goldTicketPrice = event.gold_ticket_price;
     const platinumTicketPrice = event.platinum_ticket_price;
     const diamondTicketPrice = event.diamond_ticket_price;
-    const baseTotalPrice = quantityGold * goldTicketPrice + quantityPlatinum * platinumTicketPrice + quantityDiamond * diamondTicketPrice;
+    let baseTotalPrice = 0;
+    if (quantityGold) {
+      baseTotalPrice += quantityGold * goldTicketPrice;
+    }
+
+    if (quantityPlatinum) {
+      baseTotalPrice += quantityPlatinum * platinumTicketPrice;
+    }
+
+    if (quantityDiamond) {
+      baseTotalPrice += quantityDiamond * diamondTicketPrice;
+    }
 
     // Step 8: Calculate the total price with coupon discount (if applicable)
     let totalPrice = baseTotalPrice;
@@ -132,10 +149,11 @@ exports.handleCreateTransaction = async (req, res) => {
       quantityPlatinum,
       quantityDiamond,
       quantityTotal,
+      transactionDate: new Date(),
       referralId: referral ? referral.id : null,
       couponId: coupon ? coupon.id : null,
       totalPrice, // Assign the calculated total price
-      PaymentMethodId: paymentMethodRecord.id, // Assign the PaymentMethodId
+      paymentMethodId: paymentMethodRecord.id, // Assign the PaymentMethodId
     });
 
     // Step 10: Prepare the response object with relevant quantities and payment method details
@@ -154,14 +172,21 @@ exports.handleCreateTransaction = async (req, res) => {
       transactionId: transaction.id,
       isPayed: false,
     });
-    
+
+    const rupiahFormat = (number) => {
+      // Format the number as Rupiah using the Indonesian locale (id-ID)
+      return number.toLocaleString("id-ID", { style: "currency", currency: "IDR" });
+    };
+
     // Step 11: Prepare the response object with relevant quantities and payment method details
     const responseObj = {
       ok: true,
       message: "Transaction created!",
       event: event.name,
       quantities,
-      totalPrice,
+      referral: referral ? referral.code : "No referral code applied",
+      discount: coupon ? coupon.discount + "%" : "No discount code applied",
+      totalPrice: rupiahFormat(totalPrice),
       paymentMethod: {
         name: paymentMethod,
       },
@@ -174,6 +199,97 @@ exports.handleCreateTransaction = async (req, res) => {
 
     // Return the response object
     res.status(201).json(responseObj);
+  } catch (error) {
+    console.error(error);
+    res.status(400).json({
+      ok: false,
+      message: String(error),
+    });
+  }
+};
+
+exports.handlePayTicket = async (req, res) => {
+  const transactionId = req.params.transactionId;
+
+  try {
+    // Step 1: Retrieve the transaction based on transactionId
+    const transaction = await Transaction.findOne({
+      where: { id: transactionId },
+    });
+
+    if (!transaction) {
+      return res.status(404).json({
+        ok: false,
+        message: "Transaction not found",
+      });
+    }
+
+    // Step 2: Retrieve the associated ticket
+    const ticket = await Ticket.findOne({
+      where: { transactionId: transaction.id },
+    });
+
+    if (!ticket) {
+      return res.status(404).json({
+        ok: false,
+        message: "Ticket not found",
+      });
+    }
+
+    // Step 3: Check if isPayed is already true for the ticket
+    if (ticket.isPayed) {
+      return res.status(400).json({
+        ok: false,
+        message: "Ticket is already marked as paid",
+      });
+    }
+
+    // Step 4: Check if a valid referral code is used in the transaction
+    if (transaction.referralId) {
+      const referral = await Referral.findOne({
+        where: { id: transaction.referralId },
+        attributes: ["id", "code", "createdAt", "updatedAt"]
+      });
+    
+      if (referral && referral.userId !== transaction.accountId) {
+        // Valid referral code is used (and not the user's own referral code)
+        
+        // Temukan akun yang merujuk kode referensi
+        const referredAccount = await Account.findOne({
+          where: { id: referral.id },
+        });
+    
+        if (referredAccount) {
+          referredAccount.accountPoint += 100;
+          await referredAccount.save();
+        }
+    
+        // Update the ticket to set isPayed to true
+        ticket.isPayed = true;
+        await ticket.save();
+    
+        // Create a custom message indicating the awarding of points
+        const awardMessage = `You are using ${referredAccount.username}'s referral code, and they were awarded 100 points!`;
+    
+        // Return a success response with the custom award message
+        return res.status(200).json({
+          ok: true,
+          message: "Payment successful",
+          ticket: ticket,
+          awardMessage: awardMessage,
+        });
+      }
+    }
+    // If no valid referral code is used, if the referral is not found, or if it belongs to the same user, return a success response without adding points
+    // Update the ticket to set isPayed to true
+    ticket.isPayed = true;
+    await ticket.save();
+
+    return res.status(200).json({
+      ok: true,
+      message: "Payment successful",
+      ticket: ticket,
+    });
   } catch (error) {
     console.error(error);
     res.status(400).json({
