@@ -5,6 +5,7 @@ const hbs = require("handlebars");
 const { Account, Referral } = require("../models");
 const fs = require("fs");
 const mailer = require("../lib/nodemailer");
+const { response } = require("express");
 
 
 const JWT_SECRET_KEY = process.env.JWT_SECRET_KEY;
@@ -98,6 +99,10 @@ exports.handleLogin = async (req, res) => {
           password: userIdentity,
         },
       },
+      include: {
+        model: Referral,
+        attributes: ["code"],
+      }
     });
 
     if (!account) {
@@ -121,21 +126,24 @@ exports.handleLogin = async (req, res) => {
       expiresIn: "1h",
     });
 
-    res.json({
-      ok: true,
-      data: {
-        token,
-        profile: {
+    const response = {
+      token,
+      profile: { 
         firstName: account.firstName,
-          lastName: account.lastName,
-          email: account.email,
-          username: account.username,
-          phoneNumber: account.phoneNumber,
-          referralId: account.referralId,
-          accountType: account.accountType,
-          accountPoint: account.accountPoint,
-        },
+        lastName: account.lastName,
+        email: account.email,
+        username: account.username,
+        phoneNumber: account.phoneNumber,
+        referralCode: account.Referral.code,
+        accountType: account.accountType,
+        accountPoint: account.accountPoint,
       },
+      }
+    
+
+    res.status(200).json({
+      ok: true,
+      data: response,
     });
   } catch (error) {
     res.status(401).json({
