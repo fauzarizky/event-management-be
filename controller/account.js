@@ -55,7 +55,7 @@ exports.handleRegister = async (req, res) => {
 
     const templateCompile = hbs.compile(templateRaw);
     const emailHTML = templateCompile({
-      firstName: Account.firstName
+      firstName: result.firstName
     });
     const resultEmail = await mailer.sendMail({
       to: result.email,
