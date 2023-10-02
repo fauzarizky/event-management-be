@@ -7,7 +7,7 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       Account.hasMany(models.Event, {foreignKey: "accountId" });
       Account.hasMany(models.Transaction, {foreignKey: "accountId" });
-      Account.hasOne(models.Referral, {foreignKey: "referralId"});
+      Account.belongsTo(models.Referral, {foreignKey: "referralId"});
     }
   }
   Account.init({
