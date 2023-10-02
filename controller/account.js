@@ -60,7 +60,7 @@ exports.handleRegister = async (req, res) => {
     });
     const resultEmail = await mailer.sendMail({
       to: result.email,
-      from: "ordonocturno@gmail.com",
+      from: "no-reply@mytix.com",
       subject: "Registration Success! Plesae verify your email.",
       html: emailHTML,
     });

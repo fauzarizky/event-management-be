@@ -1,4 +1,7 @@
 const { Event, Transaction, Referral, Coupon, Account, PaymentMethod, Ticket } = require("../models");
+const fs = require("fs");
+const hbs = require("handlebars");
+const mailer = require("../lib/nodemailer");
 
 exports.handleCreateTransaction = async (req, res) => {
   const eventId = req.params.eventId;
@@ -181,7 +184,8 @@ exports.handleCreateTransaction = async (req, res) => {
     // Step 11: Prepare the response object with relevant quantities and payment method details
     const responseObj = {
       ok: true,
-      message: "Transaction created!",
+      message: "Transaction created! the details has been mailed to your email!",
+      transactionId: transaction.id,
       event: event.name,
       quantities,
       referral: referral ? referral.code : "No referral code applied",
@@ -196,6 +200,40 @@ exports.handleCreateTransaction = async (req, res) => {
     if (!["Credit Card", "GOPAY", "OVO", "DANA"].includes(paymentMethod)) {
       responseObj.paymentMethod.vaNumber = vaNumber;
     }
+
+    const templateRaw = fs.readFileSync(__dirname + "/../templates/transaction.html", "utf-8");
+
+    const templateCompile = hbs.compile(templateRaw);
+    const responseHTML = {
+      transactionId: transaction.id,
+      firstName: account.firstName,
+      date: transaction.createdAt,
+      eventName: event.name,
+      eventDate: event.date,
+      location: event.location,
+      paymentMethod: paymentMethodRecord.paymentMethodName,
+      ticket: transaction.quantityTotal + (transaction.quantityTotal > 1 ? " Tickets" : " Ticket"),
+      price: transaction.totalPrice.toLocaleString("id-ID", { style: "currency", currency: "IDR" }),
+    };
+
+    if (transaction.quantityGold) {
+      responseHTML.goldTicket = transaction.quantityGold + (transaction.quantityGold > 1 ? " Tickets" : " Ticket");
+    }
+    if (transaction.quantityPlatinum) {
+      responseHTML.platinumTicket = transaction.quantityPlatinum + (transaction.quantityPlatinum > 1 ? " Tickets" : " Ticket");
+    }
+    if (transaction.quantityDiamond) {
+      responseHTML.diamondTicket = transaction.quantityDiamond + (transaction.quantityDiamond > 1 ? " Tickets" : " Ticket");
+    }
+
+    const emailHTML = templateCompile(responseHTML);
+
+    const resultEmail = await mailer.sendMail({
+      to: account.email,
+      from: "no-reply@mytix.com",
+      subject: "You have booked ticket! please complete your transaction.",
+      html: emailHTML,
+    });
 
     // Return the response object
     res.status(201).json(responseObj);
@@ -215,6 +253,16 @@ exports.handlePayTicket = async (req, res) => {
     // Step 1: Retrieve the transaction based on transactionId
     const transaction = await Transaction.findOne({
       where: { id: transactionId },
+      include: [
+        {
+          model: Event,
+          attributes: ["name", "date", "location"],
+        },
+        {
+          model: PaymentMethod,
+          attributes: ["paymentMethodName"],
+        },
+      ],
     });
 
     if (!transaction) {
@@ -248,33 +296,73 @@ exports.handlePayTicket = async (req, res) => {
     if (transaction.referralId) {
       const referral = await Referral.findOne({
         where: { id: transaction.referralId },
-        attributes: ["id", "code", "createdAt", "updatedAt"]
+        attributes: ["id", "code", "createdAt", "updatedAt"],
       });
-    
+
       if (referral && referral.userId !== transaction.accountId) {
         // Valid referral code is used (and not the user's own referral code)
-        
+
         // Temukan akun yang merujuk kode referensi
         const referredAccount = await Account.findOne({
           where: { id: referral.id },
         });
-    
+
         if (referredAccount) {
           referredAccount.accountPoint += 100;
           await referredAccount.save();
         }
-    
+
         // Update the ticket to set isPayed to true
         ticket.isPayed = true;
         await ticket.save();
-    
+
+        const account = await Account.findOne({
+          where: { id: req.user.id },
+          attributes: ["firstName", "email"],
+        });
+
+        // Use the user's firstName in the email template
+        const templateRaw = fs.readFileSync(__dirname + "/../templates/paymentsuccess.html", "utf-8");
+
+        const templateCompile = hbs.compile(templateRaw);
+        const response2HTML = {
+          ticketId: ticket.id,
+          firstName: account.firstName,
+          date: ticket.updatedAt,
+          eventName: transaction.Event.name,
+          eventDate: transaction.Event.date,
+          location: transaction.Event.location,
+          price: transaction.totalPrice.toLocaleString("id-ID", { style: "currency", currency: "IDR" }),
+          paymentMethod: transaction.PaymentMethod.paymentMethodName,
+          ticket: transaction.quantityTotal + (transaction.quantityTotal > 1 ? " Tickets" : " Ticket"),
+        };
+
+        if (transaction.quantityGold) {
+          response2HTML.goldTicket = transaction.quantityGold + (transaction.quantityGold > 1 ? " Tickets" : " Ticket");
+        }
+        if (transaction.quantityPlatinum) {
+          response2HTML.platinumTicket = transaction.quantityPlatinum + (transaction.quantityPlatinum > 1 ? " Tickets" : " Ticket");
+        }
+        if (transaction.quantityDiamond) {
+          response2HTML.diamondTicket = transaction.quantityDiamond + (transaction.quantityDiamond > 1 ? " Tickets" : " Ticket");
+        }
+
+        const emailHTML = templateCompile(response2HTML);
+
+        const resultEmail = await mailer.sendMail({
+          to: account.email,
+          from: "no-reply@mytix.com",
+          subject: "Thank you for the completing the transactions, This is your details of your ticket.",
+          html: emailHTML,
+        });
+
         // Create a custom message indicating the awarding of points
         const awardMessage = `You are using ${referredAccount.username}'s referral code, and they were awarded 100 points!`;
-    
+
         // Return a success response with the custom award message
         return res.status(200).json({
           ok: true,
-          message: "Payment successful",
+          message: "Payment Success, the detail of your ticket is sended to your email.",
           ticket: ticket,
           awardMessage: awardMessage,
         });
