@@ -4,6 +4,7 @@ const jwt = require("jsonwebtoken");
 const hbs = require("handlebars");
 const { Account, Referral } = require("../models");
 const fs = require("fs");
+const mailer = require("../lib/nodemailer");
 
 
 const JWT_SECRET_KEY = process.env.JWT_SECRET_KEY;
@@ -21,7 +22,7 @@ exports.handleRegister = async (req, res) => {
     if (existingAccount) {
       return res.status(400).json({
         ok: false,
-        error: "Username, email atau nomor telepon sudah digunakan",
+        error: "Username, email or phone number already exists",
       });
     }
 
@@ -45,7 +46,7 @@ exports.handleRegister = async (req, res) => {
     });
 
    
-    /*
+
     const templateRaw = fs.readFileSync(
       __dirname +
        "/../templates/register.html",
@@ -54,15 +55,15 @@ exports.handleRegister = async (req, res) => {
 
     const templateCompile = hbs.compile(templateRaw);
     const emailHTML = templateCompile({
-      firstName: profile.firstName
+      firstName: Account.firstName
     });
     const resultEmail = await mailer.sendMail({
       to: result.email,
-      from: "praytodonaana@gmail.com",
-      subject: "Registrasi Berhasil",
+      from: "ordonocturno@gmail.com",
+      subject: "Registration Success! Plesae verify your email.",
       html: emailHTML,
     });
-    */
+
     
 
     res.json({
