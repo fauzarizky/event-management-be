@@ -169,6 +169,50 @@ exports.getEventByLocation = async (req, res) => {
   }
 };
 
+exports.getEventByType = async (req, res) => {
+  try {
+    const { type } = req.params;
+
+    const datas = await Event.findAll({
+      where: {
+        type,
+      },
+      include: [
+        {
+          model: Account,
+          attributes: ["username"],
+        },
+      ],
+    });
+
+    const resData = datas.map((data) => ({
+      id: data.id,
+      name: data.name,
+      image: data.image,
+      type: data.type,
+      date: data.date,
+      location: data.location,
+      description: data.description,
+      gold_ticket_price: data.gold_ticket_price,
+      platinum_ticket_price: data.platinum_ticket_price,
+      diamond_ticket_price: data.diamond_ticket_price,
+      createdAt: data.createdAt,
+      updatedAt: data.updatedAt,
+      OrganizedBy: data.Account.username,
+    }));
+
+    res.status(200).json({
+      ok: true,
+      data: resData,
+    });
+  } catch (error) {
+    res.status(404).json({
+      ok: false,
+      msg: String(error),
+    });
+  }
+};
+
 exports.getEventById = async (req, res) => {
   try {
     const { id } = req.params;
