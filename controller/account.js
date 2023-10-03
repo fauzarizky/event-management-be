@@ -61,7 +61,7 @@ exports.handleRegister = async (req, res) => {
     const resultEmail = await mailer.sendMail({
       to: result.email,
       from: "no-reply@mytix.com",
-      subject: "Registration Success! Plesae verify your email.",
+      subject: "Registration Success! Please verify your email.",
       html: emailHTML,
     });
 
