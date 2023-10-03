@@ -50,7 +50,7 @@ exports.handleRegister = async (req, res) => {
 
     const templateRaw = fs.readFileSync(
       __dirname +
-       "/../templates/register2.html",
+       "/../templates/register.html",
        "utf-8");
     
 
