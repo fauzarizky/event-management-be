@@ -151,7 +151,7 @@
                                 </td>
                               </tr>
                               <tr>
-                                <td valign="top" style="text-align: center; padding: 10px 0 10px 20px">
+                                <td valign="top" style="text-align: center; padding: 10px 0px 10px 20px">
                                   <img src="https://i.ibb.co/ft19Ck8/11-Success-1-removebg-preview.png" width = "60%"/>
                                 </td>
                               </tr>
@@ -161,35 +161,41 @@
                                 </td>
                               </tr>
                               <tr>
-                                <td valign="top" style="text-align: left; padding: 15px 0px 60px 0px">
+                                <td valign="top" style="text-align: left; background-color: white; padding: 20px 0px 5px 0px">
                                   <table role="presentation" cellspacing="0" cellpadding="0" border="0" style="text-align: left">
                                     <tbody>
                                       <tr>
-                                        <td style="border-radius: 50px; text-align: left" class="button-td">
-                       
+                                        <td>
+                                          <hr />
+                                          <img src=https://th.bing.com/th/id/OIP.VPR3P7HGt0azXQoWHbJRlwAAAA?pid=ImgDet&rs=1" width = "50%"/>
+                                          <span style="display: block; font-weight: bold;"> No. Invoice : {{invoice}}</span><hr />
                                           <span style="display: block;"> Payment date : {{date}} </span>
                                           <span style="display: block;"> Ticket ID : {{ticketId}}  </span>
                                           <span style="display: block;"> Event name : {{eventName}}  </span>
                                           <span style="display: block;"> Event date : {{eventDate}} </span>
                                           <span style="display: block;"> Location : {{location}} </span>
                                           <span style="display: block;"> Payment method : {{paymentMethod}} </span>
-                                          <span style="display: block;"> Ticket : {{ticket}} </span>
-                                          <span style="display: block;"> Price : {{price}} </span>
-                                          {{#if goldTicket}}
-                                          <span style="display: block"> Gold : {{goldTicket}} </span>
-                                          {{/if}}
-                                          <span></span>
-                                          {{#if platinumTicket}}
-                                          <span style="display: block"> Platinum : {{platinumTicket}} </span>
-                                          {{/if}}
-                                          <span></span>
-                                          {{#if diamondTicket}}
-                                          <span style="display: block"> Diamond : {{diamondTicket}} </span>
-                                          {{/if}}
-                                        </td>
+                                          <hr />
+                      
                                     </tr>
                                   </tbody>
                                 </table>
+                                </td>
+                              </tr>
+                              <tr>
+                                <td valign="top" style="text-align: right; padding: 0px 20px 15px 20px; line-height: 20px; color: black; background-color: white;">
+                                  <span style="display: block"> Ticket : {{ticket}}</span>
+                                  {{#if goldTicket}}
+                                  <span style="display: block"> Gold : {{goldTicket}} </span>
+                                  {{/if}}
+                                  <span></span>
+                                  {{#if platinumTicket}}
+                                  <span style="display: block"> Platinum : {{platinumTicket}} </span>
+                                  {{/if}}
+                                  <span></span>
+                                  {{#if diamondTicket}}
+                                  <span style="display: block"> Diamond : {{diamondTicket}} </span>
+                                  {{/if}}
                                 </td>
                               </tr>
                             </tbody>
