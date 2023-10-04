@@ -12,7 +12,7 @@ module.exports = {
   },
 
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable("Profiles", "image");
+    await queryInterface.removeColumn("Events", "image");
   },
 };
 
