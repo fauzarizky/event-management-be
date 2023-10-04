@@ -41,7 +41,14 @@ exports.handleCreateEvent = async (req, res) => {
 
 exports.getAllEvents = async (req, res) => {
   try {
+    const limit = parseInt(req.query.limit) || 10;
+    const page = parseInt(req.query.page) || 1;
+
+    const offset = (page - 1) * limit;
+
     const events = await Event.findAll({
+      limit,
+      offset,
       include: [
         {
           model: Account,
@@ -249,7 +256,6 @@ exports.getEventById = async (req, res) => {
       ok: true,
       data: resData,
     });
-
   } catch (error) {
     res.status(404).json({
       ok: false,
