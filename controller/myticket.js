@@ -4,8 +4,14 @@ exports.handleGetMyTicket = async (req, res) => {
   const accountId = req.user.id;
 
   try {
+    const limit = parseInt(req.query.limit) || 10;
+    const page = parseInt(req.query.page) || 1;
+
+    const offset = (page - 1) * limit;
     // Find tickets associated with the user's account
-    const tickets = await Ticket.findAll({
+    const { count, rows: tickets } = await Ticket.findAndCountAll({
+      limit,
+      offset,
       include: [
         {
           model: Transaction,
@@ -68,19 +74,22 @@ exports.handleGetMyTicket = async (req, res) => {
       }
 
       if (!ticket.isPayed && (paymentName === "BCA Virtual Account" || paymentName === "Mandiri Virtual Account" || paymentName === "BNI Virtual Account")) {
-        responseObj.vaNumber = ticket.Transaction.PaymentMethod.vaNumber; 
+        responseObj.vaNumber = ticket.Transaction.PaymentMethod.vaNumber;
       }
-      
+
       if (!ticket.isPayed && (paymentName === "GOPAY" || paymentName === "OVO" || paymentName === "DANA")) {
-        responseObj.eWalletNumber = ticket.Transaction.PaymentMethod.eWalletNumber; 
+        responseObj.eWalletNumber = ticket.Transaction.PaymentMethod.eWalletNumber;
       }
-      
+
       return responseObj;
     });
 
-    
     res.status(200).json({
       ok: true,
+      pagination: {
+        totalData: count + (count > 1 ? " datas" : " data"),
+        page,
+      },
       data: ticketData,
     });
   } catch (error) {

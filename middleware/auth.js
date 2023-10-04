@@ -19,7 +19,7 @@ exports.validateToken = (req, res, next) => {
       });
       return;
     }
-
+    console.log(token);
     const payload = jwt.verify(token, JWT_SECRET_KEY);
     if (!payload) {
       res.status(401).json({
@@ -39,8 +39,7 @@ exports.validateToken = (req, res, next) => {
   }
 };
 
-
-exports.checkRole = (req,res,next ) => {
+exports.checkRole = (req, res, next) => {
   if (req.user.accountType === "event organizer") {
     next();
     return;
@@ -48,10 +47,10 @@ exports.checkRole = (req,res,next ) => {
 
   res.status(401).json({
     ok: false,
-    message: "invalid account role type"
-  })
-}
-exports.checkRoleUser = (req,res,next ) => {
+    message: "invalid account role type",
+  });
+};
+exports.checkRoleUser = (req, res, next) => {
   if (req.user.accountType === "user") {
     next();
     return;
@@ -59,6 +58,6 @@ exports.checkRoleUser = (req,res,next ) => {
 
   res.status(401).json({
     ok: false,
-    message: "invalid account role type"
-  })
-}
+    message: "invalid account role type",
+  });
+};

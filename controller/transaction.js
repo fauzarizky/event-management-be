@@ -181,10 +181,13 @@ exports.handleCreateTransaction = async (req, res) => {
       return number.toLocaleString("id-ID", { style: "currency", currency: "IDR" });
     };
 
+    const invoice =  "INV/" + transaction.createdAt.getTime() + "/" + transaction.id  + "/" + account.username.toUpperCase()
+
     // Step 11: Prepare the response object with relevant quantities and payment method details
     const responseObj = {
       ok: true,
       message: "Transaction created! the details has been mailed to your email!",
+      invoice,
       transactionId: transaction.id,
       event: event.name,
       quantities,
@@ -205,6 +208,7 @@ exports.handleCreateTransaction = async (req, res) => {
 
     const templateCompile = hbs.compile(templateRaw);
     const responseHTML = {
+      invoice,
       transactionId: transaction.id,
       firstName: account.firstName,
       date: transaction.createdAt,
@@ -318,14 +322,17 @@ exports.handlePayTicket = async (req, res) => {
 
         const account = await Account.findOne({
           where: { id: req.user.id },
-          attributes: ["firstName", "email"],
+          attributes: ["firstName", "email", "username"],
         });
 
+        const invoice =  "INV/" + transaction.createdAt.getTime() + "/" + transaction.id  + "/" + account.username.toUpperCase()
+        
         // Use the user's firstName in the email template
         const templateRaw = fs.readFileSync(__dirname + "/../templates/paymentsuccess.html", "utf-8");
 
         const templateCompile = hbs.compile(templateRaw);
         const response2HTML = {
+          invoice,
           ticketId: ticket.id,
           firstName: account.firstName,
           date: ticket.updatedAt,
@@ -363,6 +370,7 @@ exports.handlePayTicket = async (req, res) => {
         return res.status(200).json({
           ok: true,
           message: "Payment Success, the detail of your ticket is sended to your email.",
+          invoice,
           ticket: ticket,
           awardMessage: awardMessage,
         });
