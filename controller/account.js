@@ -5,7 +5,7 @@ const hbs = require("handlebars");
 const { Account, Referral } = require("../models");
 const fs = require("fs");
 const mailer = require("../lib/nodemailer");
-const { response } = require("express");
+
 
 
 const JWT_SECRET_KEY = process.env.JWT_SECRET_KEY;
