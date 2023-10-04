@@ -46,26 +46,18 @@ exports.handleRegister = async (req, res) => {
       accountType
     });
 
-   
-
-    const templateRaw = fs.readFileSync(
-      __dirname +
-       "/../templates/register.html",
-       "utf-8");
-    
-
+    const templateRaw = fs.readFileSync(__dirname + "/../templates/register.html", "utf-8");
     const templateCompile = hbs.compile(templateRaw);
     const emailHTML = templateCompile({
       firstName: result.firstName
     });
+
     const resultEmail = await mailer.sendMail({
       to: result.email,
       from: "no-reply@mytix.com",
       subject: "Registration Success! Please verify your email.",
       html: emailHTML,
     });
-
-    
 
     res.json({
       ok: true,
