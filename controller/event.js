@@ -1,17 +1,11 @@
 const { Event, Account } = require("../models");
 const { Op } = require("sequelize");
-const { fs } = require("fs");
 
 exports.handleCreateEvent = async (req, res) => {
   const { name, type, date, location, description, gold_ticket_price, platinum_ticket_price, diamond_ticket_price } = req.body;
-  console.log(req.file);
   const { filename } = req.file;
 
   try {
-    if (profile.profilePicture) {
-      //delete old picture
-      fs.rmSync(__dirname + "/../public/" + profile.profilePicture);
-    }
     const result = await Event.create({
       accountId: req.user.id,
       image: filename,
@@ -46,7 +40,7 @@ exports.getAllEvents = async (req, res) => {
 
     const offset = (page - 1) * limit;
 
-    const events = await Event.findAll({
+    const { count, rows: events } = await Event.findAndCountAll({
       limit,
       offset,
       include: [
@@ -76,6 +70,10 @@ exports.getAllEvents = async (req, res) => {
 
     res.status(200).json({
       ok: true,
+      pagiNation: {
+        totalData: count + (count > 1 ? "datas" : "data"),
+        page,
+      },
       data: responseObj,
     });
   } catch (error) {
@@ -134,9 +132,14 @@ exports.getSpesificEvent = async (req, res) => {
 
 exports.getEventByLocation = async (req, res) => {
   try {
+    const limit = parseInt(req.query.limit) || 10;
+    const page = parseInt(req.query.page) || 1;
+    const offset = (page - 1) * limit;
     const { location } = req.params;
 
-    const datas = await Event.findAll({
+    const { count, rows: datas } = await Event.findAndCountAll({
+      limit,
+      offset,
       where: {
         location,
       },
@@ -166,6 +169,10 @@ exports.getEventByLocation = async (req, res) => {
 
     res.status(200).json({
       ok: true,
+      pagiNation: {
+        totalData: count + (count > 1 ? " datas" : " data"),
+        page,
+      },
       data: resData,
     });
   } catch (error) {
@@ -178,9 +185,14 @@ exports.getEventByLocation = async (req, res) => {
 
 exports.getEventByType = async (req, res) => {
   try {
+    const limit = parseInt(req.query.limit) || 10;
+    const page = parseInt(req.query.page) || 1;
+    const offset = (page - 1) * limit;
     const { type } = req.params;
 
-    const datas = await Event.findAll({
+    const { count, rows: datas } = await Event.findAndCountAll({
+      limit,
+      offset,
       where: {
         type,
       },
@@ -210,6 +222,10 @@ exports.getEventByType = async (req, res) => {
 
     res.status(200).json({
       ok: true,
+      pagiNation: {
+        totalData: count + (count > 1 ? " datas" : " data"),
+        page,
+      },
       data: resData,
     });
   } catch (error) {
