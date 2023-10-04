@@ -91,7 +91,7 @@ exports.getSpesificEvent = async (req, res) => {
     const datas = await Event.findAll({
       where: {
         name: {
-          [Op.like]: `%${event}`,
+          [Op.like]: `%${event}%`,
         },
       },
       include: [
@@ -101,6 +101,13 @@ exports.getSpesificEvent = async (req, res) => {
         },
       ],
     });
+
+    if (datas.length === 0) {
+      return res.status(404).json({
+        ok: false,
+        msg: "No events found matching the specified criteria.",
+      });
+    }
 
     const resData = datas.map((data) => ({
       id: data.id,
@@ -150,6 +157,13 @@ exports.getEventByLocation = async (req, res) => {
         },
       ],
     });
+
+    if (datas.length === 0) {
+      return res.status(404).json({
+        ok: false,
+        msg: "No events found matching the specified criteria.",
+      });
+    }
 
     const resData = datas.map((data) => ({
       id: data.id,
@@ -204,6 +218,13 @@ exports.getEventByType = async (req, res) => {
       ],
     });
 
+    if (datas.length === 0) {
+      return res.status(404).json({
+        ok: false,
+        msg: "No events found matching the specified criteria.",
+      });
+    }
+
     const resData = datas.map((data) => ({
       id: data.id,
       name: data.name,
@@ -251,6 +272,13 @@ exports.getEventById = async (req, res) => {
         },
       ],
     });
+
+    if (datas.length === 0) {
+      return res.status(404).json({
+        ok: false,
+        msg: "No events found matching the specified criteria.",
+      });
+    }
 
     const resData = datas.map((data) => ({
       id: data.id,
