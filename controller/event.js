@@ -5,6 +5,13 @@ exports.handleCreateEvent = async (req, res) => {
   const { name, type, date, location, description, gold_ticket_price, platinum_ticket_price, diamond_ticket_price } = req.body;
   const { filename } = req.file;
 
+  if (!name || !type || !date || !location || !description || !gold_ticket_price || !platinum_ticket_price || !diamond_ticket_price || !filename) {
+    return res.status(400).json({
+      ok: false,
+      message: "Please provide all required information for the event.",
+    });
+  }
+
   try {
     const result = await Event.create({
       accountId: req.user.id,
