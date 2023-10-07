@@ -32,7 +32,6 @@ exports.handleCreateEvent = async (req, res) => {
       detail: result,
     });
   } catch (error) {
-    console.error(error);
     res.status(400).json({
       ok: false,
       message: String(error),
@@ -78,7 +77,7 @@ exports.getAllEvents = async (req, res) => {
     res.status(200).json({
       ok: true,
       pagiNation: {
-        totalData: count + (count > 1 ? "datas" : "data"),
+        totalData: count,
         page,
       },
       data: responseObj,
@@ -191,7 +190,7 @@ exports.getEventByLocation = async (req, res) => {
     res.status(200).json({
       ok: true,
       pagiNation: {
-        totalData: count + (count > 1 ? " datas" : " data"),
+        totalData: count,
         page,
       },
       data: resData,
